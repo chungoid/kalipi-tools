@@ -2,7 +2,7 @@ import subprocess
 import os
 
 #display menu
-def mainMenu():
+def main():
     while True:
         print("Select an Option")
         print("[1] Create New Hostname")
@@ -81,3 +81,8 @@ def updateAndUpgrade():
         subprocess.run(['sudo', 'update && upgrade'], check=True)
     except subprocess.CalledProcessError as e:
         print(f"An error occured: {e}")
+
+
+if __name__ == "__main__":
+    main()
+
