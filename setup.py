@@ -26,7 +26,7 @@ def main():
         elif option == '6':
             raise SystemExit
         else:
-            print("Invalid Option.")
+            print("Invalid Option")
     
 #change default hostname
 def changeHostname():
@@ -61,7 +61,7 @@ def createNewSuperUser():
 
 #create swapfile
 def createSwapFile():
-    new_swapfile_size = input("Enter Swapfile Size (ex: 500M or 1G)")
+    new_swapfile_size = input("Enter Swapfile Size (ex: 500M or 1G): ")
     addFstab = "/swapfile none swap sw 0 0\n"
 
     #create swapfile
@@ -71,6 +71,7 @@ def createSwapFile():
         subprocess.run(['sudo', 'mkswap', '/swapfile'], check=True)
         subprocess.run(['sudo', 'swapon', '/swapfile'], check=True)
         subprocess.run(['sudo', 'sh', '-c', f'echo "{addFstab.strip()}" >> /etc/fstab'], check=True)
+        subprocess.run(['sudo', 'swapon', '--show'], check=True)
     except subprocess.CalledProcessError as e:
         print(f"An error occured: {e}")
 
