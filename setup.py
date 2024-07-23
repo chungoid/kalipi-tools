@@ -41,8 +41,8 @@ def changeHostname():
             subprocess.run(['sudo', 'reboot', 'now'])
         elif reboot == 'n':
             raise SystemExit
-        elif reboot != 'y' or reboot != 'n':
-            print("y or n")
+        elif reboot != 'y' and reboot != 'n':
+            print("Please enter 'y' or 'n'")
 
     except subprocess.CalledProcessError as e:
         print(f"\nFailed to change hostname: {e.stderr}")
