@@ -35,6 +35,14 @@ def changeHostname():
     #run hostnamectl and change hostname
     try:
         result = subprocess.run(['hostnamectl', 'set-hostname', new_hostname], check=True, text=True, capture_output=True)
+        reboot = input("Reboot HIGHLY Recommended: (y/n)")
+        if reboot == 'y':
+            result = subprocess.run(['sudo', 'reboot', 'now'])
+        elif reboot == 'n':
+            raise SystemExit
+        elif reboot != 'y' or reboot != 'n':
+            print("y or n")
+
     except subprocess.CalledProcessError as e:
         print(f"Failed to change hostname: {e.stderr}")
         
