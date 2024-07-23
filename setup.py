@@ -2,16 +2,18 @@ import subprocess
 import os
 
 #display menu
-print("Select an Option")
-print("[1] Create New Hostname")
-print("[2] Create New sudo User")
-print("[3] Create Swapfile")
-print("[4] Add Additional Networks")
-print("[5] Update & Upgrade")
-print("[6] Exit")
+def mainMenu():
+    while True:
+        print("Select an Option")
+        print("[1] Create New Hostname")
+        print("[2] Create New sudo User")
+        print("[3] Create Swapfile")
+        print("[4] Add Additional Networks")
+        print("[5] Update & Upgrade")
+        print("[6] Exit")
 
-#execute
-def execute_command(option):
+        choice = input("Select an Option: ")
+
     if option == '1':
         command = changeHostname()
     elif option == '2':
@@ -24,7 +26,7 @@ def execute_command(option):
         command = updateAndUpgrade()
     elif option == '6':
         command = SystemExit
-        
+
         return
 
 #change default hostname
