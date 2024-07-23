@@ -9,7 +9,7 @@ def main():
         print("[3] Create Swapfile")
         print("[4] Add Additional Networks")
         print("[5] Update & Upgrade")
-        print("[6] Exit")
+        print("[0] Exit")
         
         option = input("Select an Option: ")
 
@@ -23,7 +23,7 @@ def main():
             addNetworks()
         elif option == '5':
             updateAndUpgrade()
-        elif option == '6':
+        elif option == '0':
             raise SystemExit
         else:
             print("\nInvalid Option")
@@ -31,21 +31,21 @@ def main():
     
 #change default hostname
 def changeHostname():
-    new_hostname = input("Enter a new hostname: ")
+    new_hostname = input("Enter a new Hostname: ")
     
     #run hostnamectl and change hostname
     try:
-        result = subprocess.run(['hostnamectl', 'set-hostname', new_hostname], check=True, text=True, capture_output=True)
-        reboot = input("Reboot HIGHLY Recommended (y/n): ")
+        subprocess.run(['hostnamectl', 'set-hostname', new_hostname], check=True, text=True, capture_output=True)
+        reboot = input("\nReboot HIGHLY Recommended (y/n): ")
         if reboot == 'y':
-            result = subprocess.run(['sudo', 'reboot', 'now'])
+            subprocess.run(['sudo', 'reboot', 'now'])
         elif reboot == 'n':
             raise SystemExit
         elif reboot != 'y' or reboot != 'n':
             print("y or n")
 
     except subprocess.CalledProcessError as e:
-        print(f"Failed to change hostname: {e.stderr}")
+        print(f"\nFailed to change hostname: {e.stderr}")
     returnToMain()
         
 #create new sudo user and delete default
@@ -58,7 +58,7 @@ def createNewSuperUser():
         subprocess.run(['sudo', 'usermod', '-aG', 'sudo', new_superuser], check=True)
         subprocess.run(['sudo', 'passwd', new_superuser], check=True)
     except subprocess.CalledProcessError as e:
-        print(f"An error occured: {e}")
+        print(f"\nAn error occured: {e}")
     returnToMain()
 
 #create swapfile
@@ -75,7 +75,7 @@ def createSwapFile():
         subprocess.run(['sudo', 'sh', '-c', f'echo "{addFstab.strip()}" >> /etc/fstab'], check=True)
         subprocess.run(['sudo', 'swapon', '--show'], check=True)
     except subprocess.CalledProcessError as e:
-        print(f"An error occured: {e}")
+        print(f"\nAn error occured: {e}")
     returnToMain()
 
 #add additional networks using nmcli
@@ -83,19 +83,60 @@ def addNetworks():
     try:
         subprocess.run(['sudo', 'nmtui'], check=True)
     except subprocess.CalledProcessError as e:
-        print(f"An error occured: {e}")
+        print(f"\nAn error occured: {e}")
     returnToMain()
 
-#update & upgrade
+#update && upgrade
 def updateAndUpgrade():
     try:
         subprocess.run(['sudo', 'update && upgrade'], check=True)
     except subprocess.CalledProcessError as e:
-        print(f"An error occured: {e}")
+        print(f"\nAn error occured: {e}")
+    returnToMain()
+
+#rtl88xxau drivers with option to select old or new
+def installRealtekDrivers():
+    home_dir = os.path.expanduser("~")
+    driver_dir = os.path.join(home_dir, "rtl8812au")
+    subprocess.run(['cd ~'], check=True)
+    
+    # Check if directory already exists
+    if os.path.exists(driver_dir):
+        while True:    
+            uninstall = input("\n[1]Continue Installation or [2]Uninstall and Reinstall: ")
+            if uninstall == "2":
+                os.chdir(driver_dir)
+                subprocess.run(['sudo', 'make', 'dkms_remove'], check=True)
+                break
+            elif uninstall == "1":
+                break
+            else:
+                print("\nInvalid Input, try again")
+    else: 
+        os.chdir(home_dir)
+        subprocess.run(['sudo', 'git', 'clone', 'https://github.com/aircrack-ng/rtl8812au'], check=True)                    
+        os.chdir(driver_dir)
+
+    #[1] downloads current & [2] uses backups from same repo
+    while True:        
+        oldOrNew = input("\n[1]Current or [2]Backup")
+        if oldOrNew == "2":
+            subprocess.run(['git', 'reset', '--hard 63cf0b4'], check=True)
+            break
+        elif oldOrNew == "1":
+            break
+        else:
+            print("\nInvalid Option, try again")
+        
+    try:
+       subprocess.run(['sudo', 'make', 'dkms_install'], check=True)
+    except subprocess.CalledProcessError as e:
+        print(f"\nAn error occurred: {e}")
+
     returnToMain()
 
 def returnToMain():
-    do_continue = input("\nTask completed\n[1]Main Menu or [2]Exit: ")
+    do_continue = input("\n[1]Main Menu or [2]Exit: ")
     if do_continue == "1":
         main()
     else:
