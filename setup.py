@@ -49,7 +49,6 @@ def changeHostname():
 #create new sudo user and delete default
 def createNewSuperUser():
     new_superuser = input("Enter a new Username: ")
-    new_password = input("Enter a new Password: ")
 
     #create the user
     try:
