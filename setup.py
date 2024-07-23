@@ -3,7 +3,6 @@ import os
 
 #display menu
 def main():
-    while True:
         print("Select an Option")
         print("[1] Create New Hostname")
         print("[2] Create New sudo User")
@@ -11,24 +10,24 @@ def main():
         print("[4] Add Additional Networks")
         print("[5] Update & Upgrade")
         print("[6] Exit")
+        
+        option = input("Select an Option: ")
 
-        choice = input("Select an Option: ")
-
-    if option == '1':
-        command = changeHostname()
-    elif option == '2':
-        command = createNewSuperUser()
-    elif option == '3':
-        command = createSwapFile()
-    elif option == '4':
-        command = addNetworks()
-    elif option == '5':
-        command = updateAndUpgrade()
-    elif option == '6':
-        command = SystemExit
-
-        return
-
+        if option == '1':
+            changeHostname()
+        elif option == '2':
+            createNewSuperUser()
+        elif option == '3':
+            createSwapFile()
+        elif option == '4':
+            addNetworks()
+        elif option == '5':
+            updateAndUpgrade()
+        elif option == '6':
+            raise SystemExit
+        else:
+            print("Invalid Option.")
+    
 #change default hostname
 def changeHostname():
     new_hostname = input("Enter a new hostname: ")
