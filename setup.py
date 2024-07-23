@@ -3,7 +3,7 @@ import os
 
 #display menu
 def main():
-        print("\nSelect an Option")
+        print("\n")
         print("[1] Create New Hostname")
         print("[2] Create New sudo User")
         print("[3] Create Swapfile")
@@ -12,7 +12,7 @@ def main():
         print("[6] Install Realtek Drivers")
         print("[0] Exit")
         
-        option = input("Select an Option: ")
+        option = input("\nSelect an Option: ")
 
         if option == '1':
             changeHostname()
@@ -66,6 +66,7 @@ def createNewSuperUser():
 
 #create swapfile
 def createSwapFile():
+    print("\nDevices like the Zero/Zero2 or older rPI's will need at least 250M")
     new_swapfile_size = input("Enter Swapfile Size (ex: 500M or 1G): ")
     addFstab = "/swapfile none swap sw 0 0\n"
 
@@ -107,7 +108,7 @@ def installRealtekDrivers():
     # Check if directory already exists
     if os.path.exists(driver_dir):
         while True:    
-            uninstall = input("\n[1]Continue Installation or [2]Uninstall and Reinstall: ")
+            uninstall = input("\n[1]Continue Installation\n[2]Uninstall and Reinstall\nSelect an Option: ")
             if uninstall == "2":
                 os.chdir(driver_dir)
                 subprocess.run(['sudo', 'make', 'dkms_remove'], check=True)
@@ -123,7 +124,7 @@ def installRealtekDrivers():
 
     #[1] downloads current & [2] uses backups from same repo
     while True:        
-        oldOrNew = input("\n[1]Current or [2]Backup")
+        oldOrNew = input("\n[1]Current\n[2]Backup\nSelect an Option: ")
         if oldOrNew == "2":
             subprocess.run(['git', 'reset', '--hard 63cf0b4'], check=True)
             break
