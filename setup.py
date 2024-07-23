@@ -9,6 +9,7 @@ def main():
         print("[3] Create Swapfile")
         print("[4] Add Additional Networks")
         print("[5] Update & Upgrade")
+        print("[6] Install Realtek Drivers")
         print("[0] Exit")
         
         option = input("Select an Option: ")
@@ -23,6 +24,8 @@ def main():
             addNetworks()
         elif option == '5':
             updateAndUpgrade()
+        elif option == '6':
+            installRealtekDrivers()
         elif option == '0':
             raise SystemExit
         else:
