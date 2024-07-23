@@ -3,7 +3,7 @@ import os
 
 #display menu
 def main():
-        print("Select an Option")
+        print("\nSelect an Option")
         print("[1] Create New Hostname")
         print("[2] Create New sudo User")
         print("[3] Create Swapfile")
@@ -26,7 +26,7 @@ def main():
         elif option == '6':
             raise SystemExit
         else:
-            print("Invalid Option")
+            print("\nInvalid Option")
             main()
     
 #change default hostname
@@ -95,8 +95,8 @@ def updateAndUpgrade():
     returnToMain()
 
 def returnToMain():
-    print("Task completed - Press 1 to Return to Menu or 2 to Exit: ")
-    if input() == "1":
+    do_continue = input("\nTask completed\n[1]Main Menu or [2]Exit: ")
+    if do_continue == "1":
         main()
     else:
         exit()
