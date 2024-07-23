@@ -99,9 +99,9 @@ def updateAndUpgrade():
 
 #rtl88xxau drivers with option to select old or new
 def installRealtekDrivers():
-    home_dir = os.path.expanduser("~")
+    home_dir = os.path.expanduser("~/")
     driver_dir = os.path.join(home_dir, "rtl8812au")
-    subprocess.run(['cd ~'], check=True)
+    subprocess.run(['cd', '~'], check=True)
     
     # Check if directory already exists
     if os.path.exists(driver_dir):
