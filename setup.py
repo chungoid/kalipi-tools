@@ -3,17 +3,17 @@ import os
 
 #display menu
 def main():
+    try:
         print("\n")
         print("[1] Create New Hostname (automatic reboot)")
         print("[2] Create New sudo User")
         print("[3] Create Swapfile")
         print("[4] Add Additional Networks")
-        print("[5] Update & Upgrade")
+        print("[5] Update && Upgrade")
         print("[6] Install Realtek Drivers")
         print("[0] Exit")
-        
+     
         option = input("\nSelect an Option: ")
-
         if option == '1':
             changeHostname()
         elif option == '2':
@@ -30,8 +30,10 @@ def main():
             raise SystemExit
         else:
             print("\nInvalid Option")
-            main()
-    
+            returnToMain()
+    except Exception as e:
+        print(f"\nAn error occurred: {e}")
+
 #change default hostname
 def changeHostname():
     new_hostname = input("Enter a new Hostname: ")
@@ -49,9 +51,12 @@ def changeHostname():
 #change default username or create new username
 def createNewSuperUser():
     newOrChangeUser = input("\n[1] Create New sudo User\n[2] Rename Default User\nSelect an Option: ")
-    currentUser = subprocess.run(['whoami'], capture_output=True, text=True, check=True)
-    new_name = input("\nEnter a new Username: ")
-    
+    try:
+        currentUser = subprocess.run(['whoami'], capture_output=True, text=True, check=True)
+        new_name = input("\nEnter a new Username: ")
+    except subprocess.calledProcessError as e:
+        print(f"\nAn error occured: {e}")
+
     #create new user
     if newOrChangeUser == "1":
         try:
@@ -132,10 +137,12 @@ def updateAndUpgrade():
 
 #rtl88xxau drivers with option to select old or new
 def installRealtekDrivers():
-    home_dir = os.path.expanduser("~/")
-    driver_dir = os.path.join(home_dir, "rtl8812au")
-    
-    os.chdir(home_dir)
+    try:
+        home_dir = os.path.expanduser("~/")
+        driver_dir = os.path.join(home_dir, "rtl8812au")
+        os.chdir(home_dir)
+    except Exception as e:
+        print(f"\nAn error occured: {e}")
     
     # Check if directory already exists
     if os.path.exists(driver_dir):
