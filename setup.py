@@ -27,6 +27,7 @@ def main():
             raise SystemExit
         else:
             print("Invalid Option")
+            main()
     
 #change default hostname
 def changeHostname():
@@ -35,7 +36,7 @@ def changeHostname():
     #run hostnamectl and change hostname
     try:
         result = subprocess.run(['hostnamectl', 'set-hostname', new_hostname], check=True, text=True, capture_output=True)
-        reboot = input("Reboot HIGHLY Recommended: (y/n)")
+        reboot = input("Reboot HIGHLY Recommended (y/n): ")
         if reboot == 'y':
             result = subprocess.run(['sudo', 'reboot', 'now'])
         elif reboot == 'n':
@@ -45,11 +46,11 @@ def changeHostname():
 
     except subprocess.CalledProcessError as e:
         print(f"Failed to change hostname: {e.stderr}")
+    returnToMain()
         
 #create new sudo user and delete default
 def createNewSuperUser():
     new_superuser = input("Enter a new Username: ")
-    new_password = input("Enter a new Password: ")
 
     #create the user
     try:
@@ -58,6 +59,7 @@ def createNewSuperUser():
         subprocess.run(['sudo', 'passwd', new_superuser], check=True)
     except subprocess.CalledProcessError as e:
         print(f"An error occured: {e}")
+    returnToMain()
 
 #create swapfile
 def createSwapFile():
@@ -74,6 +76,7 @@ def createSwapFile():
         subprocess.run(['sudo', 'swapon', '--show'], check=True)
     except subprocess.CalledProcessError as e:
         print(f"An error occured: {e}")
+    returnToMain()
 
 #add additional networks using nmcli
 def addNetworks():
@@ -81,7 +84,7 @@ def addNetworks():
         subprocess.run(['sudo', 'nmtui'], check=True)
     except subprocess.CalledProcessError as e:
         print(f"An error occured: {e}")
-
+    returnToMain()
 
 #update & upgrade
 def updateAndUpgrade():
@@ -89,7 +92,15 @@ def updateAndUpgrade():
         subprocess.run(['sudo', 'update && upgrade'], check=True)
     except subprocess.CalledProcessError as e:
         print(f"An error occured: {e}")
+    returnToMain()
 
+def returnToMain():
+    print("Task completed - Press 1 to Return to Menu or 2 to Exit: ")
+    if input() == "1":
+        main()
+    else:
+        exit()
+        
 
 if __name__ == "__main__":
     main()
