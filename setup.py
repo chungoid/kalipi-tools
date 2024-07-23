@@ -4,7 +4,7 @@ import os
 #display menu
 def main():
         print("\n")
-        print("[1] Create New Hostname")
+        print("[1] Create New Hostname (automatic reboot)")
         print("[2] Create New sudo User")
         print("[3] Create Swapfile")
         print("[4] Add Additional Networks")
@@ -39,17 +39,12 @@ def changeHostname():
     #run hostnamectl and change hostname
     try:
         subprocess.run(['hostnamectl', 'set-hostname', new_hostname], check=True, text=True, capture_output=True)
-        reboot = input("\nReboot HIGHLY Recommended (y/n): ")
-        if reboot == 'y':
-            subprocess.run(['sudo', 'reboot', 'now'])
-        elif reboot == 'n':
-            raise SystemExit
-        elif reboot != 'y' and reboot != 'n':
-            print("Please enter 'y' or 'n'")
+        input("\npress any key to reboot")
+        subprocess.run(['sudo', 'reboot', 'now'])
 
     except subprocess.CalledProcessError as e:
         print(f"\nFailed to change hostname: {e.stderr}")
-    returnToMain()
+        returnToMain()
         
 #create new sudo user and delete default
 def createNewSuperUser():
@@ -66,13 +61,23 @@ def createNewSuperUser():
 
 #create swapfile
 def createSwapFile():
-    print("\nDevices like the Zero/Zero2 or older rPI's will need at least 250M")
-    new_swapfile_size = input("Enter Swapfile Size (ex: 500M or 1G): ")
+    print("\n512MB recommended on Zero/Zero2, 1GB on 8GB Models, and 2GB on 1GB-4GB Models")
+    enter_size = input("\n[1] 512MB\n[2] 1GB\n[3] 2GB")
+    
+    if enter_size == "1":
+        size = "512MB"
+    elif enter_size == "2":
+        size = "1GB"
+    elif enter_size == "3":
+        size = "2GB"
+    else:
+        print("\nInvalid Input, try again...")
+
     addFstab = "/swapfile none swap sw 0 0\n"
 
     #create swapfile
     try:
-        subprocess.run(['sudo', 'fallocate', '-l', new_swapfile_size, '/swapfile'], check=True)
+        subprocess.run(['sudo', 'fallocate', '-l', size, '/swapfile'], check=True)
         subprocess.run(['sudo', 'chmod', '600', '/swapfile'], check=True)
         subprocess.run(['sudo', 'mkswap', '/swapfile'], check=True)
         subprocess.run(['sudo', 'swapon', '/swapfile'], check=True)
@@ -108,7 +113,7 @@ def installRealtekDrivers():
     # Check if directory already exists
     if os.path.exists(driver_dir):
         while True:    
-            uninstall = input("\n[1]Continue Installation\n[2]Uninstall and Reinstall\nSelect an Option: ")
+            uninstall = input("\n[1]Continue Installation\n[2]Uninstall and Reinstall\n\nSelect an Option: ")
             if uninstall == "2":
                 os.chdir(driver_dir)
                 subprocess.run(['sudo', 'make', 'dkms_remove'], check=True)
@@ -116,7 +121,7 @@ def installRealtekDrivers():
             elif uninstall == "1":
                 break
             else:
-                print("\nInvalid Input, try again")
+                print("\nInvalid Input, try again...")
     else: 
         os.chdir(home_dir)
         subprocess.run(['sudo', 'git', 'clone', 'https://github.com/aircrack-ng/rtl8812au'], check=True)                    
@@ -124,14 +129,14 @@ def installRealtekDrivers():
 
     #[1] downloads current & [2] uses backups from same repo
     while True:        
-        oldOrNew = input("\n[1]Current\n[2]Backup\nSelect an Option: ")
+        oldOrNew = input("\n[1]Current\n[2]Backup\n\nSelect an Option: ")
         if oldOrNew == "2":
             subprocess.run(['git', 'reset', '--hard 63cf0b4'], check=True)
             break
         elif oldOrNew == "1":
             break
         else:
-            print("\nInvalid Option, try again")
+            print("\nInvalid Option, try again...")
         
     try:
        subprocess.run(['sudo', 'make', 'dkms_install'], check=True)
