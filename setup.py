@@ -46,23 +46,50 @@ def changeHostname():
         print(f"\nFailed to change hostname: {e.stderr}")
         returnToMain()
         
-#create new sudo user and delete default
+#change default username or create new username
 def createNewSuperUser():
-    new_superuser = input("Enter a new Username: ")
+    newOrChangeUser = input("\n[1] Create New sudo User\n[2] Rename Default User\nSelect an Option: ")
+    currentUser = subprocess.run(['whoami'], capture_output=True, text=True, check=True)
+    new_name = input("\nEnter a new Username: ")
+    
+    #create new user
+    if newOrChangeUser == "1":
+        try:
+            subprocess.run(['sudo', 'useradd', '-m', new_name], check=True)
+            subprocess.run(['sudo', 'usermod', '-aG', 'sudo', new_name], check=True)
+            subprocess.run(['sudo', 'passwd', new_name], check=True)
+        except subprocess.CalledProcessError as e:
+            print(f"\nAn error occured: {e}")
+    
+    #rename current user
+    elif newOrChangeUser == "2":
+        subprocess.run(['sudo', 'usermod', '-l', new_name, 'whoami'],check=True)
+    else:
+        print("\nInvalid Input, try again...")
 
-    #create the user
-    try:
-        subprocess.run(['sudo', 'useradd', '-m', new_superuser], check=True)
-        subprocess.run(['sudo', 'usermod', '-aG', 'sudo', new_superuser], check=True)
-        subprocess.run(['sudo', 'passwd', new_superuser], check=True)
-    except subprocess.CalledProcessError as e:
-        print(f"\nAn error occured: {e}")
+    #delete previous user
+    deleteUser = input("\nWould you like to delete the prior username?\n[1] Yes\n[2] No\nSelect an Option: ")
+    if deleteUser == "1":
+        subprocess.run(['sudo', 'su', new_name], check=True)
+        subprocess.run(['sudo', 'userdel', '-r', currentUser], check=True)
+
+    elif deleteUser == "2":
+        changeUser = input("Would you like to change over to the new User?\n[1] Yes\n[2]No\nSelect an Option: ")
+        if changeUser == "1":
+            subprocess.run(['sudo', 'su', new_name], check=True)
+        elif changeUser == "2":
+            returnToMain()
+        else:
+            print("\nInvalid Input, try again...")
+    else:
+        print("Invalid Input, try again...")
+
     returnToMain()
 
 #create swapfile
 def createSwapFile():
     print("\n512MB recommended on Zero/Zero2, 1GB on 8GB Models, and 2GB on 1GB-4GB Models")
-    enter_size = input("\n[1] 512MB\n[2] 1GB\n[3] 2GB")
+    enter_size = input("\n[1] 512MB\n[2] 1GB\n[3] 2GB\nSelect an Option: ")
     
     if enter_size == "1":
         size = "512MB"
@@ -146,7 +173,7 @@ def installRealtekDrivers():
     returnToMain()
 
 def returnToMain():
-    do_continue = input("\n[1]Main Menu or [2]Exit: ")
+    do_continue = input("\n[1]Main Menu\n[2]Exit\nSelect an Option: ")
     if do_continue == "1":
         main()
     else:
