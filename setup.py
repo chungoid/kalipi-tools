@@ -70,7 +70,7 @@ def createSwapFile():
         subprocess.run(['sudo', 'chmod', '600', '/swapfile'], check=True)
         subprocess.run(['sudo', 'mkswap', '/swapfile'], check=True)
         subprocess.run(['sudo', 'swapon', '/swapfile'], check=True)
-        subprocess.run(['sudo', 'sh', '-c', f'echo "{addFstab.strip()} >> /etc/fstab'], check=True)
+        subprocess.run(['sudo', 'sh', '-c', f'echo "{addFstab.strip()}" >> /etc/fstab'], check=True)
     except subprocess.CalledProcessError as e:
         print(f"An error occured: {e}")
 
