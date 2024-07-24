@@ -67,13 +67,10 @@ def createNewSuperUser():
             print(f"\nAn error occured: {e}")
     
     #rename current user
-        try:
-            subprocess.run(['sudo', 'pkill', '-u', currentUser], check=True)
+    elif newOrChangeUser == "2":
+        try: subprocess.run(['sudo', 'pkill', '-u', currentUser], check=True)
         except subprocess.CalledProcessError as e:
             print(f"\nAn error occurred: {e}")
-            return
-        
-    elif newOrChangeUser == "2":
         subprocess.run(['sudo', 'usermod', '-l', new_name, currentUser],check=True)
     else:
         print("\nInvalid Input, try again...")
