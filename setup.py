@@ -1,6 +1,5 @@
 import subprocess
 import os
-import psutil
 
 #display menu
 def main():
@@ -13,7 +12,6 @@ def main():
         print("[5] Update && Upgrade")
         print("[6] Install Realtek Drivers")
         print("[0] Exit")
-        '''print("[11] Create New User (potentially bugged)")'''
      
         option = input("\nSelect an Option: ")
         if option == '1':
@@ -28,8 +26,6 @@ def main():
             updateAndUpgrade()
         elif option == '6':
             installRealtekDrivers()
-        elif option == '11':
-            createNewSuperUser()
         elif option == '0':
             raise SystemExit
         else:
@@ -59,53 +55,6 @@ def changeHostname():
     except subprocess.CalledProcessError as e:
         print(f"\nFailed to change hostname: {e.stderr}")
         returnToMain()
-
-#change default username or create new username *needs fixing*
-'''def createNewSuperUser():
-    newOrChangeUser = input("\n[1] Create New sudo User\n[2] Rename Default User\nSelect an Option: ")
-    try:
-        currentUser = subprocess.run(['whoami'], capture_output=True, text=True, check=True).stdout.strip()
-        new_name = input("\nEnter a new Username: ")
-    except subprocess.calledProcessError as e:
-        print(f"\nAn error occured: {e}")
-
-    #create new user
-    if newOrChangeUser == "1":
-        try:
-            subprocess.run(['sudo', 'useradd', '-m', new_name], check=True)
-            subprocess.run(['sudo', 'usermod', '-aG', 'sudo', new_name], check=True)
-            subprocess.run(['sudo', 'passwd', new_name], check=True)
-            subprocess.run(['sudo', 'su', new_name], check=True)
-        except subprocess.CalledProcessError as e:
-            print(f"\nAn error occured: {e}")
-    
-    #rename current user
-    elif newOrChangeUser == "2":
-        try: subprocess.run(['sudo', 'pkill', '-u', currentUser], check=True)
-        except subprocess.CalledProcessError as e:
-            print(f"\nAn error occurred: {e}")
-        subprocess.run(['sudo', 'usermod', '-l', new_name, currentUser],check=True)
-    else:
-        print("\nInvalid Input, try again...")
-
-    #delete previous user
-    deleteUser = input("\nWould you like to delete the prior username?\n[1] Yes\n[2] No\nSelect an Option: ")
-    if deleteUser == "1":
-        subprocess.run(['sudo', 'su', new_name], check=True)
-        subprocess.run(['sudo', 'userdel', '-r', currentUser], check=True)
-
-    elif deleteUser == "2":
-        changeUser = input("Would you like to change over to the new User?\n[1] Yes\n[2]No\nSelect an Option: ")
-        if changeUser == "1":
-            subprocess.run(['sudo', 'su', new_name], check=True)
-        elif changeUser == "2":
-            returnToMain()
-        else:
-            print("\nInvalid Input, try again...")
-    else:
-        print("Invalid Input, try again...")
-
-    returnToMain()'''
 
 #create swapfile
 def createSwapFile():
