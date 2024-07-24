@@ -16,9 +16,9 @@ def main():
      
         option = input("\nSelect an Option: ")
         if option == '1':
-            changeHostname()
+            changeDefaultPassword()
         elif option == '2':
-            createNewSuperUser()
+            changeHostname()
         elif option == '3':
             createSwapFile()
         elif option == '4':
