@@ -1,5 +1,6 @@
 import subprocess
 import os
+import psutil
 
 #display menu
 def main():
@@ -62,6 +63,7 @@ def createNewSuperUser():
         try:
             subprocess.run(['sudo', 'useradd', '-m', new_name], check=True)
             subprocess.run(['sudo', 'usermod', '-aG', 'sudo', new_name], check=True)
+            subprocess.run(['sudo', 'su', new_name], check=True)
             subprocess.run(['sudo', 'passwd', new_name], check=True)
         except subprocess.CalledProcessError as e:
             print(f"\nAn error occured: {e}")
@@ -188,6 +190,12 @@ def returnToMain():
         main()
     else:
         exit()
+
+def getPid():
+    for proc in psutil.process_iter(['pid', 'name']):
+        if proc.info['name'] == process_name:
+            return proc.info['pid']
+    return None
         
 
 if __name__ == "__main__":
