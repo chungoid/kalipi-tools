@@ -6,8 +6,8 @@ import psutil
 def main():
     try:
         print("\n")
-        print("[1] Create New Hostname (automatic reboot)")
-        print("[2] Create New sudo User")
+        print("[1] Change Default Password")
+        print("[2] Create New Hostname (automatic reboot)")
         print("[3] Create Swapfile")
         print("[4] Add Additional Networks")
         print("[5] Update && Upgrade")
@@ -35,6 +35,14 @@ def main():
     except Exception as e:
         print(f"\nAn error occurred: {e}")
 
+#change default password
+def changeDefaultPassword():
+    try:
+        subprocess.run(['sudo', 'passwd'])
+    except subprocess.CalledProcessError as e:
+        print(f"\nAn error occurred: {e}")
+    returnToMain()
+
 #change default hostname
 def changeHostname():
     new_hostname = input("Enter a new Hostname: ")
@@ -48,9 +56,9 @@ def changeHostname():
     except subprocess.CalledProcessError as e:
         print(f"\nFailed to change hostname: {e.stderr}")
         returnToMain()
-        
-#change default username or create new username
-def createNewSuperUser():
+
+#change default username or create new username *needs fixing*
+'''def createNewSuperUser():
     newOrChangeUser = input("\n[1] Create New sudo User\n[2] Rename Default User\nSelect an Option: ")
     try:
         currentUser = subprocess.run(['whoami'], capture_output=True, text=True, check=True).stdout.strip()
@@ -94,7 +102,7 @@ def createNewSuperUser():
     else:
         print("Invalid Input, try again...")
 
-    returnToMain()
+    returnToMain()'''
 
 #create swapfile
 def createSwapFile():
