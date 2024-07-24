@@ -52,7 +52,7 @@ def changeHostname():
 def createNewSuperUser():
     newOrChangeUser = input("\n[1] Create New sudo User\n[2] Rename Default User\nSelect an Option: ")
     try:
-        currentUser = subprocess.run(['whoami'], capture_output=True, text=True, check=True)
+        currentUser = subprocess.run(['whoami'], capture_output=True, text=True, check=True).stdout.strip()
         new_name = input("\nEnter a new Username: ")
     except subprocess.calledProcessError as e:
         print(f"\nAn error occured: {e}")
