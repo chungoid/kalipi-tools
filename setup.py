@@ -146,7 +146,7 @@ def addNetworks():
 #update && upgrade
 def updateAndUpgrade():
     try:
-        subprocess.run(['sudo', 'update && upgrade'], check=True)
+        subprocess.run(['sudo', 'apt', 'update && upgrade'], check=True)
     except subprocess.CalledProcessError as e:
         print(f"\nAn error occured: {e}")
     returnToMain()
