@@ -68,7 +68,7 @@ def createNewSuperUser():
     
     #rename current user
     elif newOrChangeUser == "2":
-        subprocess.run(['sudo', 'usermod', '-l', new_name, 'whoami'],check=True)
+        subprocess.run(['sudo', 'usermod', '-l', new_name, currentUser],check=True)
     else:
         print("\nInvalid Input, try again...")
 
