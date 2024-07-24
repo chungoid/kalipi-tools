@@ -13,7 +13,7 @@ def main():
         print("[5] Update && Upgrade")
         print("[6] Install Realtek Drivers")
         print("[0] Exit")
-        print("[11] Create New User (potentially bugged)")
+        '''print("[11] Create New User (potentially bugged)")'''
      
         option = input("\nSelect an Option: ")
         if option == '1':
@@ -61,7 +61,7 @@ def changeHostname():
         returnToMain()
 
 #change default username or create new username *needs fixing*
-def createNewSuperUser():
+'''def createNewSuperUser():
     newOrChangeUser = input("\n[1] Create New sudo User\n[2] Rename Default User\nSelect an Option: ")
     try:
         currentUser = subprocess.run(['whoami'], capture_output=True, text=True, check=True).stdout.strip()
@@ -105,7 +105,7 @@ def createNewSuperUser():
     else:
         print("Invalid Input, try again...")
 
-    returnToMain()
+    returnToMain()'''
 
 #create swapfile
 def createSwapFile():
