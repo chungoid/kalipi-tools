@@ -14,7 +14,7 @@
  }
 ```
 ## How to use```
-`git clone https://github.com/chungoid/kalipi-tools
+git clone https://github.com/chungoid/kalipi-tools
 cd kalipi-tools
 python setup.py`
 ```
