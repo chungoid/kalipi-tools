@@ -200,14 +200,7 @@ def returnToMain():
     if do_continue == "1":
         main()
     else:
-        exit()
-
-def getPid():
-    for proc in psutil.process_iter(['pid', 'name']):
-        if proc.info['name'] == process_name:
-            return proc.info['pid']
-    return None
-        
+        exit()       
 
 if __name__ == "__main__":
     main()
